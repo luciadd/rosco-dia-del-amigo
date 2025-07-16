@@ -1,6 +1,6 @@
 export const ROSCO = [
-  { letter: "A", clue: "Red fruit", answer: "apple" },
-  { letter: "B", clue: "Buzzing insect", answer: "bee" },
+  { letter: "A", clue: "Trastorno del espectro que tiene el perro de Maru", answer: "Autismo" },
+  { letter: "B", clue: "Instrumento que toca Gime", answer: "Bajo" },
   { letter: "C", clue: "Domesticated feline", answer: "cat" },
   { letter: "D", clue: "Man’s best friend", answer: "dog" },
   { letter: "E", clue: "Large, gray, trunked animal", answer: "elephant" },
