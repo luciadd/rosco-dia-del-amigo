@@ -1,106 +1,56 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { ROSCO } from "./roscoData";
-import LetterCircle from "./LetterCircle";
-
-const TOTAL_TIME = 150; // seconds
-
-function getInitialStatus() {
-  return ROSCO.map((q) => ({
-    letter: q.letter,
-    state: "pending", // "correct", "wrong"
-  }));
-}
+// ...other imports
 
 export default function App() {
-  const [current, setCurrent] = useState(0);
-  const [guess, setGuess] = useState("");
-  const [status, setStatus] = useState(getInitialStatus());
-  const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
-  const [gameOver, setGameOver] = useState(false);
-  const intervalRef = useRef();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [pending, setPending] = useState([]);
+  const [completed, setCompleted] = useState([]); // For answered letters
+  // ...other state
 
-  useEffect(() => {
-    if (gameOver) return;
-    intervalRef.current = setInterval(() => {
-      setTimeLeft((t) => {
-        if (t <= 1) {
-          clearInterval(intervalRef.current);
-          setGameOver(true);
-          return 0;
-        }
-        return t - 1;
-      });
-    }, 1000);
-    return () => clearInterval(intervalRef.current);
-  }, [gameOver]);
+  // Get the list of questions in current round
+  const currentRosco = pending.length > 0 ? pending : ROSCO;
 
-  function handleGuess(e) {
-    e.preventDefault();
-    if (gameOver) return;
-    const correct =
-      ROSCO[current].answer.trim().toLowerCase() === guess.trim().toLowerCase();
-    const newStatus = [...status];
-    if (correct) {
-      newStatus[current].state = "correct";
-      setStatus(newStatus);
-      if (current === ROSCO.length - 1) {
-        setGameOver(true);
-        clearInterval(intervalRef.current);
-      } else {
-        setCurrent((c) => c + 1);
-        setGuess("");
-      }
+  function handlePasapalabra() {
+    // If we're in a second round, move to next pending
+    if (pending.length > 0) {
+      setPending((prev) => [...prev.slice(1), prev[0]]);
     } else {
-      newStatus[current].state = "wrong";
-      setStatus(newStatus);
-      setGameOver(true);
-      clearInterval(intervalRef.current);
+      // First round: add to pending, move to next
+      setPending((prev) => [...prev, currentIndex]);
+      goToNext();
     }
   }
 
-  function restart() {
-    setCurrent(0);
-    setGuess("");
-    setStatus(getInitialStatus());
-    setTimeLeft(TOTAL_TIME);
-    setGameOver(false);
+  function goToNext() {
+    // If at end of round, start pending round
+    if (currentIndex + 1 >= ROSCO.length) {
+      if (pending.length > 0) {
+        setCurrentIndex(pending[0]);
+        setPending((prev) => prev.slice(1));
+      } else {
+        // Game over
+      }
+    } else {
+      setCurrentIndex(currentIndex + 1);
+    }
   }
 
+  // When a letter is answered correctly or incorrectly
+  function handleAnswer(isCorrect) {
+    setCompleted((prev) => [...prev, currentIndex]);
+    goToNext();
+  }
+
+  // Render current question
+  const question = ROSCO[currentIndex];
+
   return (
-    <div className="app-container">
-      <h1>El Rosco</h1>
-      <LetterCircle status={status} current={current} />
-      <div className="timer">
-        Tiempo restante: {Math.floor(timeLeft / 60)}:
-        {(timeLeft % 60).toString().padStart(2, "0")}
-      </div>
-      {!gameOver ? (
-        <form onSubmit={handleGuess}>
-          <div className="clue">
-            <strong>{ROSCO[current].letter}</strong>: {ROSCO[current].clue}
-          </div>
-          <input
-            autoFocus
-            value={guess}
-            onChange={(e) => setGuess(e.target.value)}
-            placeholder="Tu respuesta"
-            disabled={gameOver}
-          />
-          <button type="submit">Enviar</button>
-        </form>
-      ) : (
-        <div className="gameover">
-          {status.some((s) => s.state === "wrong") || timeLeft === 0 ? (
-            <span>
-              ¡Game Over! <button onClick={restart}>Reiniciar</button>
-            </span>
-          ) : (
-            <span>
-              ¡Felicidades! <button onClick={restart}>Jugar de nuevo</button>
-            </span>
-          )}
-        </div>
-      )}
+    <div>
+      <h1>{question.letter}</h1>
+      <p>{question.question}</p>
+      {/* ...answer input/buttons */}
+      <button onClick={handlePasapalabra}>Pasapalabra</button>
     </div>
   );
 }
