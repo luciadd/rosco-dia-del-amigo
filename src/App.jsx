@@ -9,7 +9,7 @@ function getInitialStatus() {
   }));
 }
 
-const TOTAL_TIME = 150; // 2:30
+const TOTAL_TIME = 150;
 
 export default function App() {
   const [current, setCurrent] = useState(0);
@@ -114,8 +114,12 @@ export default function App() {
     setTimerRunning(true);
   }
 
+  if (!ROSCO.length) {
+    return <div style={{textAlign: "center", marginTop: 50, fontSize: 24, color: "red"}}>No questions loaded. Please check your roscoData.js file.</div>;
+  }
+
   const idx = getCurrentIndex();
-  const question = ROSCO[idx];
+  const question = ROSCO[idx] || { letter: '', clue: '' };
 
   return (
     <div className="app-container">
