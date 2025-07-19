@@ -21,7 +21,7 @@ export default function App() {
   const [timerRunning, setTimerRunning] = useState(false);
   const intervalRef = useRef();
 
-  // TIMER EFFECT
+  // Always show timer and start button
   useEffect(() => {
     if (timerRunning && !gameOver) {
       intervalRef.current = setInterval(() => {
