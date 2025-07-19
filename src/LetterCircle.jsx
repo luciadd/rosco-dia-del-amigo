@@ -4,14 +4,14 @@ import "./styles.css";
 // Props: status (array), current (number)
 export default function LetterCircle({ status, current }) {
   const N = status.length;
-  const radius = 130; // Adjust for circle size
+  const radius = 170; // Larger radius for more separation
 
   return (
     <div className="rosco-circle">
       {status.map((item, i) => {
         const angle = (2 * Math.PI * i) / N - Math.PI / 2; // Start at top
-        const x = Math.cos(angle) * radius + radius + 10;
-        const y = Math.sin(angle) * radius + radius + 10;
+        const x = Math.cos(angle) * radius + radius + 20;
+        const y = Math.sin(angle) * radius + radius + 20;
         let className = "rosco-letter";
         if (i === current) className += " current";
         if (item.state === "correct") className += " correct";
