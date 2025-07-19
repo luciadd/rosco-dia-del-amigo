@@ -1,10 +1,10 @@
 import React from "react";
 import "./styles.css";
 
-// Props: status (array), current (number)
 export default function LetterCircle({ status, current }) {
   const N = status.length;
-  const radius = 170; // Larger radius for more separation
+  const radius = 170; // match your styles
+  const letterSize = 52; // match .rosco-letter width/height
 
   return (
     <div className="rosco-circle">
@@ -22,8 +22,8 @@ export default function LetterCircle({ status, current }) {
             key={item.letter}
             className={className}
             style={{
-              left: x,
-              top: y,
+              left: x - letterSize / 2,
+              top: y - letterSize / 2,
             }}
           >
             {item.letter.toUpperCase()}
