@@ -45,7 +45,9 @@ export default function App() {
   }
 
   function goToNextLetter(pauseTimer = false) {
+    // Optionally pause timer
     if (pauseTimer) setTimerRunning(false);
+
     if (round === 1) {
       if (current < ROSCO.length - 1) {
         setCurrent((c) => c + 1);
@@ -79,6 +81,8 @@ export default function App() {
     const newStatus = [...status];
     newStatus[idx].state = "correct";
     setStatus(newStatus);
+    // Resume timer ONLY if game is not over
+    if (!gameOver) setTimerRunning(true);
     goToNextLetter(false); // Timer continues
   }
 
