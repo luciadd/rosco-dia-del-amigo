@@ -88,20 +88,19 @@ export default function App() {
       <LetterCircle status={status} current={idx} />
       {!gameOver ? (
         <div>
-          <div className="clue">
+          <div className="clue" style={{textAlign: "center", fontSize: "2rem", margin: "32px auto 12px auto", maxWidth: 650}}>
             <strong>{question.letter}</strong>: {question.clue}
           </div>
-          {/* No answer input, only buttons */}
           <div className="host-buttons">
-            <button onClick={handleCorrect} style={{background: "#4CAF50", color: "white"}}>Correcto</button>
-            <button onClick={handleWrong} style={{background: "#f44336", color: "white"}}>Incorrecto</button>
-            <button onClick={handlePasapalabra} style={{background: "#FFC107", color: "black"}}>Pasapalabra</button>
+            <button onClick={handleCorrect}>Correcto</button>
+            <button onClick={handleWrong}>Incorrecto</button>
+            <button onClick={handlePasapalabra}>Pasapalabra</button>
           </div>
         </div>
       ) : (
-        <div className="gameover">
+        <div className="gameover" style={{textAlign: "center", fontSize: "2rem", marginTop: 60}}>
           <span>
-            ¡Fin del juego! <button onClick={restart}>Reiniciar</button>
+            ¡Fin del juego! <button onClick={restart} style={{fontSize: "1.2rem", padding: "10px 28px"}}>Reiniciar</button>
           </span>
         </div>
       )}
