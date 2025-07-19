@@ -2,14 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import { ROSCO } from "./roscoData";
 import LetterCircle from "./LetterCircle";
 
+const TOTAL_TIME = 150; // 2:30
+
 function getInitialStatus() {
   return ROSCO.map((q) => ({
     letter: q.letter,
     state: "pending",
   }));
 }
-
-const TOTAL_TIME = 150;
 
 export default function App() {
   const [current, setCurrent] = useState(0);
@@ -45,7 +45,6 @@ export default function App() {
 
   function goToNextLetter(pauseTimer = false) {
     if (pauseTimer) setTimerRunning(false);
-
     if (round === 1) {
       if (current < ROSCO.length - 1) {
         setCurrent((c) => c + 1);
@@ -112,10 +111,6 @@ export default function App() {
   function handleStart() {
     setStarted(true);
     setTimerRunning(true);
-  }
-
-  if (!ROSCO.length) {
-    return <div style={{textAlign: "center", marginTop: 50, fontSize: 24, color: "red"}}>No questions loaded. Please check your roscoData.js file.</div>;
   }
 
   const idx = getCurrentIndex();
