@@ -5,11 +5,11 @@ import LetterCircle from "./LetterCircle";
 function getInitialStatus() {
   return ROSCO.map((q) => ({
     letter: q.letter,
-    state: "pending", // "correct", "wrong", "pending"
+    state: "pending",
   }));
 }
 
-const TOTAL_TIME = 150; // 2 minutes 30 seconds
+const TOTAL_TIME = 150; // 2:30
 
 export default function App() {
   const [current, setCurrent] = useState(0);
@@ -22,7 +22,6 @@ export default function App() {
   const [started, setStarted] = useState(false);
   const intervalRef = useRef();
 
-  // Timer effect
   useEffect(() => {
     if (timerRunning && !gameOver && started) {
       intervalRef.current = setInterval(() => {
@@ -45,7 +44,6 @@ export default function App() {
   }
 
   function goToNextLetter(pauseTimer = false) {
-    // Optionally pause timer
     if (pauseTimer) setTimerRunning(false);
 
     if (round === 1) {
@@ -62,7 +60,6 @@ export default function App() {
       if (current < pending.length - 1) {
         setCurrent((c) => c + 1);
       } else {
-        // Remove all letters that are no longer pending
         const stillPending = pending.filter(i => status[i].state === "pending");
         if (stillPending.length > 0) {
           setPending(stillPending);
@@ -81,9 +78,8 @@ export default function App() {
     const newStatus = [...status];
     newStatus[idx].state = "correct";
     setStatus(newStatus);
-    // Resume timer ONLY if game is not over
     if (!gameOver) setTimerRunning(true);
-    goToNextLetter(false); // Timer continues
+    goToNextLetter(false);
   }
 
   function handleWrong() {
@@ -91,7 +87,7 @@ export default function App() {
     const newStatus = [...status];
     newStatus[idx].state = "wrong";
     setStatus(newStatus);
-    goToNextLetter(true); // Timer pauses
+    goToNextLetter(true);
   }
 
   function handlePasapalabra() {
@@ -99,7 +95,7 @@ export default function App() {
     if (status[idx].state === "pending" && !pending.includes(idx)) {
       setPending([...pending, idx]);
     }
-    goToNextLetter(true); // Timer pauses
+    goToNextLetter(true);
   }
 
   function restart() {
@@ -136,7 +132,17 @@ export default function App() {
       </div>
       {!started && !gameOver ? (
         <div style={{textAlign: "center", marginTop: 40}}>
-          <button onClick={handleStart} style={{fontSize: "2.4rem", padding: "30px 80px", borderRadius: 18, background: "#2196f3", color: "#fff", border: "none", fontWeight: "bold", boxShadow: "0 2px 18px #2196f366", cursor: "pointer"}}>Start</button>
+          <button onClick={handleStart} style={{
+            fontSize: "2.4rem",
+            padding: "30px 80px",
+            borderRadius: 18,
+            background: "#2196f3",
+            color: "#fff",
+            border: "none",
+            fontWeight: "bold",
+            boxShadow: "0 2px 18px #2196f366",
+            cursor: "pointer"
+          }}>Start</button>
         </div>
       ) : !gameOver ? (
         <div>
